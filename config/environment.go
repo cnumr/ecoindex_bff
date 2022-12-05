@@ -10,10 +10,11 @@ import (
 var ENV *Environment
 
 type Environment struct {
-	Env     string
-	AppPort string
-	ApiKey  string
-	ApiUrl  string
+	Env         string
+	AppPort     string
+	ApiKey      string
+	ApiUrl      string
+	EcoindexUrl string
 }
 
 func GetEnvironment() *Environment {
@@ -28,10 +29,11 @@ func GetEnvironment() *Environment {
 	}
 
 	return &Environment{
-		Env:     getEnv("ENV", "dev"),
-		AppPort: getEnv("APP_PORT", "3001"),
-		ApiKey:  getEnv("API_KEY", ""),
-		ApiUrl:  getEnv("API_URL", "https://ecoindex.p.rapidapi.com"),
+		Env:         getEnv("ENV", "dev"),
+		AppPort:     getEnv("APP_PORT", "3001"),
+		ApiKey:      getEnv("API_KEY", ""),
+		ApiUrl:      getEnv("API_URL", "https://ecoindex.p.rapidapi.com"),
+		EcoindexUrl: getEnv("ECOINDEX_URL", "https://www.ecoindex.fr"),
 	}
 }
 
