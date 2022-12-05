@@ -11,6 +11,9 @@ import (
 func GetEcoindexBadge(c *fiber.Ctx) error {
 	var color, grade, title, score string
 	queryUrl := c.Query("url")
+	if queryUrl == "" {
+		return c.SendStatus(fiber.ErrBadRequest.Code)
+	}
 
 	ecoindexUrl := config.ENV.EcoindexUrl
 
