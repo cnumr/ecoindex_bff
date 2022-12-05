@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="119.25" height="28" role="img" aria-label="ECOINDEX: {{.Grade}}">
+    <title>{{.Score}} / 100 au {{.Date}}</title><a target="_blank" xlink:href="http://www.ecoindex.fr/resultat/?id={{.Id}}">
+        <g shape-rendering="crispEdges">
+            <rect width="87" height="28" fill="#555" />
+            <rect x="87" width="32.25" height="28" fill="{{.Color}}" />
+        </g>
+        <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="100"><text transform="scale(.1)" x="435" y="175" textLength="630" fill="#fff">ECOINDEX</text><text transform="scale(.1)" x="1031.25" y="175" textLength="82.5" fill="#fff" font-weight="bold">{{.Grade}}</text></g>
+    </a>
+</svg>
