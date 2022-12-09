@@ -8,4 +8,12 @@ type Ecoindex struct {
 	Requests int
 	Size     float32
 	Nodes    int
+	Url      string
+}
+
+type EcoindexSearchResults struct {
+	Count        int
+	LatestResult Ecoindex
+	OlderResults []Ecoindex
+	HostResults  []Ecoindex
 }
