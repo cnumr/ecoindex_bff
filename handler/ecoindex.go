@@ -17,13 +17,11 @@ var badgeTemplate *template.Template
 
 func GetEcoindexBadge(c *fiber.Ctx) error {
 	queryUrl := c.Query("url")
-	if queryUrl == "" {
-		return c.SendStatus(fiber.ErrBadRequest.Code)
-	}
 
-	urlToAnalyze, err := url.Parse(queryUrl)
+	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
 	if err != nil {
-		panic(err)
+		c.Status(fiber.ErrBadRequest.Code)
+		return c.SendString("Url to analyze is invalid")
 	}
 
 	ecoindexResults, err := services.GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
