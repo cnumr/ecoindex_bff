@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/vvatelot/ecoindex-microfront/config"
 	"github.com/vvatelot/ecoindex-microfront/models"
@@ -19,6 +20,7 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 
 	q := req.URL.Query()
 	q.Add("host", host)
+	q.Add("size", "100")
 
 	req.URL.RawQuery = q.Encode()
 	req.Header = http.Header{
@@ -59,7 +61,9 @@ func convertApIResult(ecoindexes []models.Ecoindex, host string, path string) mo
 			panic(err)
 		}
 
-		if ecoindexResultUrl.Host+ecoindexResultUrl.Path == host+path {
+		ecoindexUrl := ecoindexResultUrl.Host + ecoindexResultUrl.Path
+		ecoindex.Color = GetColor(ecoindex.Grade)
+		if ecoindexUrl == host+path || ecoindexUrl == strings.TrimSuffix(host+path, "/") || ecoindexUrl == host+path+"/" {
 			exactResults = append(exactResults, ecoindex)
 		} else {
 			hostResults = append(hostResults, ecoindex)

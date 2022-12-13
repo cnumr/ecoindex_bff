@@ -9,6 +9,7 @@ type Ecoindex struct {
 	Size     float32 `json:"size"`
 	Nodes    int     `json:"nodes"`
 	Url      string  `json:"url"`
+	Color    string  `json:"color"`
 }
 
 type EcoindexSearchResults struct {
