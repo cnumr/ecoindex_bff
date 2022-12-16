@@ -24,7 +24,7 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 
 	req.URL.RawQuery = q.Encode()
 	req.Header = http.Header{
-		"x-rapidapi-key": {"3037e7e96fmsh12bedced9f019f8p1cd804jsn4967070f8bda"},
+		"x-rapidapi-key": {config.ENV.ApiKey},
 	}
 
 	resp, err := client.Do(req)
