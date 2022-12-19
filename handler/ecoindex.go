@@ -7,6 +7,7 @@ import (
 	"net/url"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/proxy"
 	"github.com/vvatelot/ecoindex-microfront/assets"
 	"github.com/vvatelot/ecoindex-microfront/config"
 	"github.com/vvatelot/ecoindex-microfront/models"
@@ -71,4 +72,11 @@ func generateBadge(result models.EcoindexSearchResults) string {
 	badgeTemplate.Execute(buf, vars)
 
 	return buf.String()
+}
+
+func GetScreenshot(c *fiber.Ctx) error {
+	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
+	proxy.Forward(config.ENV.ApiUrl + "/v1/ecoindexes/" + c.Params("id") + "/screenshot")(c)
+
+	return nil
 }

@@ -21,6 +21,7 @@ func main() {
 	app.Get("/", handler.GetEcoindexBadge)
 	app.Post("/tasks", handler.CreateTask)
 	app.Get("/tasks/:id", handler.GetTask)
+	app.Get("/screenshot/:id", handler.GetScreenshot)
 
 	app.Listen(":" + config.ENV.AppPort)
 }
