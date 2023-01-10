@@ -2,7 +2,7 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -32,7 +32,7 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 		return models.EcoindexSearchResults{}, err
 	}
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return models.EcoindexSearchResults{}, err
 	}
