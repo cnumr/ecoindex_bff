@@ -20,12 +20,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 	queryUrl := c.Query("url")
 
 	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
-	if err != nil {
-		c.Status(fiber.ErrBadRequest.Code)
-		return c.SendString("Url to analyze is invalid")
-	}
-
-	if urlToAnalyze.Host == "" {
+	if err != nil || urlToAnalyze.Host == "" {
 		c.Status(fiber.ErrBadRequest.Code)
 		return c.SendString("Url to analyze is invalid")
 	}
