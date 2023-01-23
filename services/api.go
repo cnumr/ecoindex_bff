@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/vvatelot/ecoindex-microfront/config"
-	"github.com/vvatelot/ecoindex-microfront/models"
+	"github.com/vvatelot/ecoindex-bff/config"
+	"github.com/vvatelot/ecoindex-bff/models"
 )
 
 func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults, error) {
@@ -51,8 +51,6 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 }
 
 func convertApIResult(ecoindexes []models.Ecoindex, host string, path string) models.EcoindexSearchResults {
-	resultCount := len(ecoindexes)
-
 	var exactResults, hostResults []models.Ecoindex
 
 	for _, ecoindex := range ecoindexes {
@@ -71,7 +69,7 @@ func convertApIResult(ecoindexes []models.Ecoindex, host string, path string) mo
 	}
 
 	searchResults := models.EcoindexSearchResults{
-		Count:       resultCount,
+		Count:       len(ecoindexes),
 		HostResults: hostResults,
 	}
 

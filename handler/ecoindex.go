@@ -8,10 +8,10 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
-	"github.com/vvatelot/ecoindex-microfront/assets"
-	"github.com/vvatelot/ecoindex-microfront/config"
-	"github.com/vvatelot/ecoindex-microfront/models"
-	"github.com/vvatelot/ecoindex-microfront/services"
+	"github.com/vvatelot/ecoindex-bff/assets"
+	"github.com/vvatelot/ecoindex-bff/config"
+	"github.com/vvatelot/ecoindex-bff/models"
+	"github.com/vvatelot/ecoindex-bff/services"
 )
 
 var badgeTemplate *template.Template

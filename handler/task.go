@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
-	"github.com/vvatelot/ecoindex-microfront/config"
+	"github.com/vvatelot/ecoindex-bff/config"
 )
 
 func CreateTask(c *fiber.Ctx) error {

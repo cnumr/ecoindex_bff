@@ -1,4 +1,4 @@
-module github.com/vvatelot/ecoindex-microfront
+module github.com/vvatelot/ecoindex-bff
 
 go 1.19
 
