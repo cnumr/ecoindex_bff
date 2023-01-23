@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/cnumr/ecoindex-bff/config"
+	"github.com/cnumr/ecoindex-bff/handler"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/vvatelot/ecoindex-bff/config"
-	"github.com/vvatelot/ecoindex-bff/handler"
 )
 
 var ENV *config.Environment = config.GetEnvironment()

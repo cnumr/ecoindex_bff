@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/vvatelot/ecoindex-bff/models"
+	"github.com/cnumr/ecoindex-bff/models"
 )
 
 func Test_convertApIResult(t *testing.T) {

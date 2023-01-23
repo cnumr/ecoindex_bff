@@ -1,4 +1,4 @@
-module github.com/vvatelot/ecoindex-bff
+module github.com/cnumr/ecoindex-bff
 
 go 1.19
 

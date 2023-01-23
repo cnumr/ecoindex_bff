@@ -6,12 +6,12 @@ import (
 	"html/template"
 	"net/url"
 
+	"github.com/cnumr/ecoindex-bff/assets"
+	"github.com/cnumr/ecoindex-bff/config"
+	"github.com/cnumr/ecoindex-bff/models"
+	"github.com/cnumr/ecoindex-bff/services"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
-	"github.com/vvatelot/ecoindex-bff/assets"
-	"github.com/vvatelot/ecoindex-bff/config"
-	"github.com/vvatelot/ecoindex-bff/models"
-	"github.com/vvatelot/ecoindex-bff/services"
 )
 
 var badgeTemplate *template.Template
