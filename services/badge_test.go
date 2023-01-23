@@ -47,7 +47,7 @@ func TestGetColor(t *testing.T) {
 			want: "#ED2124",
 		},
 		{
-			name: "Unkonwn",
+			name: "Unknown",
 			args: args{grade: ""},
 			want: "lightgrey",
 		},
