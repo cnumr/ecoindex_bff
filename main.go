@@ -23,5 +23,9 @@ func main() {
 	app.Get("/tasks/:id", handler.GetTask)
 	app.Get("/screenshot/:id", handler.GetScreenshot)
 
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendString("OK")
+	})
+
 	app.Listen(":" + config.ENV.AppPort)
 }
