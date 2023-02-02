@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/cnumr/ecoindex-bff/assets"
 	"github.com/cnumr/ecoindex-bff/config"
@@ -32,6 +34,8 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 
 	if c.Query("badge") == "true" {
 		c.Type("svg")
+		c.Response().Header.Add("Cache-Control", "private, max-age=6000")
+		c.Response().Header.Add("Last-Modified", time.Now().Format(http.TimeFormat))
 		return c.SendString(generateBadge(ecoindexResults))
 	}
 

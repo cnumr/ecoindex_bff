@@ -4,6 +4,7 @@ import (
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/handler"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
@@ -13,6 +14,8 @@ func main() {
 	config.ENV = ENV
 
 	app := fiber.New()
+
+	app.Use(compress.New())
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
