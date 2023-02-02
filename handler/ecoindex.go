@@ -34,8 +34,10 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 
 	if c.Query("badge") == "true" {
 		c.Type("svg")
-		c.Response().Header.Add("Cache-Control", "private, max-age=6000")
+		c.Response().Header.Add("X-Ecoindex-Url", queryUrl)
+		c.Response().Header.Add("Cache-Control", "public, max-age="+config.ENV.CacheControl)
 		c.Response().Header.Add("Last-Modified", time.Now().Format(http.TimeFormat))
+		c.Vary("X-Ecoindex-Url")
 		return c.SendString(generateBadge(ecoindexResults))
 	}
 
