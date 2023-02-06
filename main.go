@@ -12,10 +12,14 @@ var ENV *config.Environment = config.GetEnvironment()
 
 func main() {
 	config.ENV = ENV
-
 	app := fiber.New()
 
-	app.Use(compress.New())
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestCompression,
+	}))
+	app.Static("/js", "./assets/js", fiber.Static{
+		MaxAge: 24 * 30 * 60 * 60,
+	})
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 	}))
