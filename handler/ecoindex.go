@@ -18,18 +18,11 @@ import (
 
 var badgeTemplate *template.Template
 
-func GetEcoindexBadge(c *fiber.Ctx) error {
-	queryUrl := c.Query("url")
-
-	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
-	if err != nil || urlToAnalyze.Host == "" {
-		c.Status(fiber.ErrBadRequest.Code)
-		return c.SendString("Url to analyze is invalid")
-	}
-
-	ecoindexResults, err := services.GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
-	if err != nil {
-		panic(err)
+// Deprecated
+func GetEcoindexResults(c *fiber.Ctx) error {
+	queryUrl, ecoindexResults, shouldReturn, returnValue := handleEcoindexRequest(c)
+	if shouldReturn {
+		return returnValue
 	}
 
 	if c.Query("badge") == "true" {
@@ -41,7 +34,58 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 		return c.SendString(generateBadge(ecoindexResults))
 	}
 
+	if ecoindexResults.Count == 0 {
+		c.Status(fiber.ErrNotFound.Code)
+	}
+
 	return c.JSON(ecoindexResults)
+}
+
+func GetEcoindexRedirect(c *fiber.Ctx) error {
+	_, ecoindexResults, shouldReturn, returnValue := handleEcoindexRequest(c)
+	if shouldReturn {
+		return returnValue
+	}
+
+	if ecoindexResults.Count == 0 {
+		return c.Redirect(config.ENV.EcoindexUrl, fiber.StatusSeeOther)
+	}
+
+	return c.Redirect(config.ENV.EcoindexUrl+"/resultat/?id="+ecoindexResults.LatestResult.Id, fiber.StatusSeeOther)
+}
+
+func GetEcoindexResultsApi(c *fiber.Ctx) error {
+	_, ecoindexResults, shouldReturn, returnValue := handleEcoindexRequest(c)
+	if shouldReturn {
+		return returnValue
+	}
+
+	if ecoindexResults.Count == 0 {
+		c.Status(fiber.ErrNotFound.Code)
+	}
+
+	return c.JSON(ecoindexResults)
+}
+
+func GetEcoindexBadge(c *fiber.Ctx) error {
+	queryUrl, ecoindexResults, shouldReturn, returnValue := handleEcoindexRequest(c)
+	if shouldReturn {
+		return returnValue
+	}
+
+	c.Type("svg")
+	c.Response().Header.Add("X-Ecoindex-Url", queryUrl)
+	c.Response().Header.Add("Cache-Control", "public, max-age="+config.ENV.CacheControl)
+	c.Response().Header.Add("Last-Modified", time.Now().Format(http.TimeFormat))
+	c.Vary("X-Ecoindex-Url")
+	return c.SendString(generateBadge(ecoindexResults))
+}
+
+func GetScreenshotApi(c *fiber.Ctx) error {
+	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
+	proxy.Forward(config.ENV.ApiUrl + "/v1/ecoindexes/" + c.Params("id") + "/screenshot")(c)
+
+	return nil
 }
 
 func initTemplate() {
@@ -80,9 +124,20 @@ func generateBadge(result models.EcoindexSearchResults) string {
 	return buf.String()
 }
 
-func GetScreenshot(c *fiber.Ctx) error {
-	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
-	proxy.Forward(config.ENV.ApiUrl + "/v1/ecoindexes/" + c.Params("id") + "/screenshot")(c)
+func handleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
+	queryUrl := c.Query("url")
 
-	return nil
+	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
+	if err != nil || urlToAnalyze.Host == "" {
+		c.Status(fiber.ErrBadRequest.Code)
+
+		return "", models.EcoindexSearchResults{}, true, c.SendString("Url to analyze is invalid")
+	}
+
+	ecoindexResults, err := services.GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
+	if err != nil {
+		panic(err)
+	}
+
+	return queryUrl, ecoindexResults, false, nil
 }

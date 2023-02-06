@@ -47,40 +47,108 @@ air
 ### Get latest results info
 
 ```http
-GET /?url=https://www.mywebsite.com/my-page/
+GET /api/results/?url=https://www.mywebsite.com/my-page/
 ```
 
 #### Get latest results parameters
 
-| Name    | Type      | Located in | Description                                                                                  |
-|:--------|:----------|:-----------|:---------------------------------------------------------------------------------------------|
-| `url`   | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
-| `badge` | `boolean` | query      | If you want to get the badge in a SVG format (default is `false`)                            |
+| Name  | Type     | Located in | Description                                                                                  |
+|-------|----------|------------|----------------------------------------------------------------------------------------------|
+| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
 
 #### Get latest results responses
 
-| Code | Description                 | Model                                                  |
-|------|-----------------------------|--------------------------------------------------------|
-| 200  | There are results in the DB | [LatestResultResponse](#latestresultresponse) / String |
+| Code | Description                      | Model                                         |
+|------|----------------------------------|-----------------------------------------------|
+| 200  | There are results in the DB      | [LatestResultResponse](#latestresultresponse) |
+| 400  | The url is not valid             | String                                        |
+| 404  | There is no result for this page | [LatestResultResponse](#latestresultresponse) |
 
 ### Add a new analysis to the tasks queue
 
 This is an alias of the [ecoindex API](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cnumr/ecoindex_api/main/docs/openapi.json#tag/Tasks/operation/Add_new_ecoindex_analysis_task_to_the_waiting_queue_v1_tasks_ecoindexes_post) Create a new task endpoint
 
+```http
+POST /api/tasks
+{
+    "url": "https://www.mywebsite.com/my-page/",
+    "width": 1920,
+    "height": 1080
+}
+```
+
 ### Get the result of a task
 
 This is an alias of the [ecoindex API](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cnumr/ecoindex_api/main/docs/openapi.json#tag/Tasks/operation/Get_ecoindex_analysis_task_by_id_v1_tasks_ecoindexes__id__get) Get the result of a task endpoint
 
+```http
+GET /api/tasks/a7c3d264-62c6-4f45-b1db-51d7db31d085
+```
+
 ### Get the screenshot of a ecoindex result
 
 This is an alias of the [ecoindex API](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/cnumr/ecoindex_api/main/docs/openapi.json#tag/Ecoindex/operation/Get_screenshot__version__ecoindexes__id__screenshot_get) Get screenshot of a ecoindex result endpoint
+
+```http
+GET /api/screenshot/a7c3d264-62c6-4f45-b1db-51d7db31d085
+```
+
+### Get Api Health
+
+```http
+GET /health
+```
+
+#### Get health response
+
+| Code | Description         | Model  |
+|------|---------------------|--------|
+| 200  | `OK` API is healthy | String |
+
+### Get Ecoindex badge
+
+```http
+GET /badge/?url=https://www.mywebsite.com/my-page/
+```
+
+#### Get badge parameters
+
+| Name  | Type     | Located in | Description                                                                                  |
+|-------|----------|------------|----------------------------------------------------------------------------------------------|
+| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+
+#### Get badge responses
+
+| Code | Description                            | Model  |
+|------|----------------------------------------|--------|
+| 200  | Badge of the result (format `svg/xml`) | String |
+| 400  | The url is not valid                   | String |
+
+### Redirect to ecoindex result page
+
+```http
+GET /redirect/?url=https://www.mywebsite.com/my-page/
+```
+
+#### Get redirect parameters
+
+| Name  | Type     | Located in | Description                                                                                  |
+|-------|----------|------------|----------------------------------------------------------------------------------------------|
+| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+
+#### Get redirect responses
+
+| Code | Description                 | Model  |
+|------|-----------------------------|--------|
+| 303  | Redirect to the result page | String |
+| 400  | The url is not valid        | String |
 
 ### Models
 
 #### Result
 
 | Name       | Type     | Description                               |
-|:-----------|:---------|:------------------------------------------|
+|------------|----------|-------------------------------------------|
 | `date`     | `string` | Date of the result                        |
 | `grade`    | `string` | Ecoindex result grade                     |
 | `id`       | `string` | Result UUID                               |
@@ -93,7 +161,7 @@ This is an alias of the [ecoindex API](https://redocly.github.io/redoc/?url=http
 #### LatestResultResponse
 
 | Name            | Type                | Description                                       |
-|:----------------|:--------------------|:--------------------------------------------------|
+|-----------------|---------------------|---------------------------------------------------|
 | `count`         | `int`               | Number of total results existing for this website |
 | `latest-result` | [Result](#result)   | Latest result for this exact webpage              |
 | `older-results` | [Result](#result)[] | Older results for the same webpage                |
