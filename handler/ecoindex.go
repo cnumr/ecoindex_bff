@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/cnumr/ecoindex-bff/assets"
@@ -39,6 +40,24 @@ func GetEcoindexResults(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(ecoindexResults)
+}
+
+func GetEcoindexBadgeJs(c *fiber.Ctx) error {
+	mediaType := "application/javascript"
+	c.Type("js")
+	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheControl)
+	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
+
+	input, err := os.ReadFile("./assets/js/badge.js")
+	if err != nil {
+		panic(err)
+	}
+
+	javascript := bytes.Replace(input, []byte("{{url}}"), []byte(config.ENV.AppUrl), -1)
+
+	js := minifyString(mediaType, string(javascript))
+
+	return c.SendString(js)
 }
 
 func GetEcoindexRedirect(c *fiber.Ctx) error {
@@ -78,6 +97,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheControl)
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 	c.Vary("X-Ecoindex-Url")
+
 	return c.SendString(generateBadge(ecoindexResults))
 }
 
@@ -121,7 +141,7 @@ func generateBadge(result models.EcoindexSearchResults) string {
 	buf := &bytes.Buffer{}
 	badgeTemplate.Execute(buf, vars)
 
-	return buf.String()
+	return minifyString("image/svg+xml", buf.String())
 }
 
 func handleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
@@ -140,4 +160,13 @@ func handleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 	}
 
 	return queryUrl, ecoindexResults, false, nil
+}
+
+func minifyString(mediaType string, input string) string {
+	minified, err := config.MINIFIER.String(mediaType, input)
+	if err != nil {
+		panic(err)
+	}
+
+	return minified
 }

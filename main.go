@@ -7,12 +7,16 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/tdewolff/minify/v2"
 )
 
 var ENV *config.Environment = config.GetEnvironment()
+var MINIFIER *minify.M = config.GetMinifier()
 
 func main() {
 	config.ENV = ENV
+	config.MINIFIER = MINIFIER
+
 	app := fiber.New()
 	if ENV.Env == "dev" {
 		app.Use(logger.New())
@@ -20,13 +24,11 @@ func main() {
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestCompression,
 	}))
-	app.Static("/js", "./assets/js", fiber.Static{
-		MaxAge: 24 * 30 * 60 * 60,
-	})
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 	}))
 
+	app.Get("/js/badge.js", handler.GetEcoindexBadgeJs)
 	app.Get("/badge", handler.GetEcoindexBadge)
 	app.Get("/redirect", handler.GetEcoindexRedirect)
 	app.Get("/health", func(c *fiber.Ctx) error {

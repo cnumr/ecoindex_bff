@@ -1,5 +1,5 @@
 (function(){
-    const baseUrl = "https://bff.ecoindex.fr";
+    const baseUrl = "{{url}}";
     const url = window.location.href;
     const badge = document.getElementById("ecoindex-badge");
     const a = document.createElement("a");
