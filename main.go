@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 var ENV *config.Environment = config.GetEnvironment()
@@ -15,8 +16,13 @@ func main() {
 
 	app := fiber.New()
 
-	app.Use(compress.New())
+	if ENV.Env == "dev" {
+		app.Use(logger.New())
+	}
 
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestCompression,
+	}))
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 	}))
