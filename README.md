@@ -42,6 +42,20 @@ air
 
 > You can now reach your Back For Front instance on [http://localhost:3001](http://localhost:3001) (regarding the `APP_PORT` you defined...)
 
+## 🔧 Configuration
+
+### Environment variables
+
+| Name           | Description                                                                        | Default value                       |
+|----------------|------------------------------------------------------------------------------------|-------------------------------------|
+| `API_URL`      | The url of the ecoindex API you want to reach                                      | `"https://ecoindex.p.rapidapi.com"` |
+| `API_KEY`      | The API key you want to use to reach the ecoindex API (if production server)       | `""`                                |
+| `APP_PORT`     | The port on which the application will listen                                      | `3001`                              |
+| `APP_URL`      | The url of the application                                                         | `"http://localhost:3001"`           |
+| `ENV`          | The environment in which the application is running (in dev mode, enables logging) | `dev`                               |
+| `CACHE_TTL`    | The time to live of the cache (in seconds)                                         | `604800` (1 week)                   |
+| `ECOINDEX_URL` | The url of the ecoindex website                                                    | `"https://www.ecoindex.fr"`         |
+
 ## ➤ API Reference
 
 ### Get latest results info

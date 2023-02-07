@@ -29,7 +29,7 @@ func GetEcoindexResults(c *fiber.Ctx) error {
 	if c.Query("badge") == "true" {
 		c.Type("svg")
 		c.Set("X-Ecoindex-Url", queryUrl)
-		c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheControl)
+		c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
 		c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 		c.Vary("X-Ecoindex-Url")
 		return c.SendString(generateBadge(ecoindexResults))
@@ -45,7 +45,7 @@ func GetEcoindexResults(c *fiber.Ctx) error {
 func GetEcoindexBadgeJs(c *fiber.Ctx) error {
 	mediaType := "application/javascript"
 	c.Type("js")
-	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheControl)
+	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 
 	input, err := os.ReadFile("./assets/js/badge.js")
@@ -94,7 +94,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 
 	c.Type("svg")
 	c.Set("X-Ecoindex-Url", queryUrl)
-	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheControl)
+	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 	c.Vary("X-Ecoindex-Url")
 
