@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/cnumr/ecoindex-bff/assets"
@@ -48,7 +47,7 @@ func GetEcoindexBadgeJs(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 
-	input, err := os.ReadFile("./assets/js/badge.js")
+	input, err := assets.JsFs.ReadFile("js/badge.js")
 	if err != nil {
 		panic(err)
 	}

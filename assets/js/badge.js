@@ -7,7 +7,7 @@
 
     a.href = `${baseUrl}/redirect/?url=${url}`; 
     a.target = "_blank";
-    img.src = `${baseUrl}/?badge=true&url=${url}`;
+    img.src = `${baseUrl}/badge/?url=${url}`;
     a.appendChild(img);
     badge.appendChild(a);
 })();
