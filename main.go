@@ -19,7 +19,9 @@ func main() {
 
 	app := fiber.New()
 	if ENV.Env == "dev" {
-		app.Use(logger.New())
+		app.Use(logger.New(logger.Config{
+			Format: "[${time}] | ${status} | ${latency} | ${method} | ${path} | url=${query:url}\n",
+		}))
 	}
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestCompression,

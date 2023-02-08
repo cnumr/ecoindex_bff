@@ -9,7 +9,26 @@ import (
 
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/models"
+	"github.com/gofiber/fiber/v2"
 )
+
+func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
+	queryUrl := c.Query("url")
+
+	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
+	if err != nil || urlToAnalyze.Host == "" {
+		c.Status(fiber.ErrBadRequest.Code)
+
+		return "", models.EcoindexSearchResults{}, true, c.SendString("Url to analyze is invalid")
+	}
+
+	ecoindexResults, err := GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
+	if err != nil {
+		panic(err)
+	}
+
+	return queryUrl, ecoindexResults, false, nil
+}
 
 func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults, error) {
 	client := http.Client{}
