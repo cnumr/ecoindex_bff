@@ -61,7 +61,7 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 
 	q := req.URL.Query()
 	q.Add("host", host)
-	q.Add("size", "100")
+	q.Add("size", "20")
 
 	req.URL.RawQuery = q.Encode()
 	req.Header = http.Header{
