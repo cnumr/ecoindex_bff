@@ -12,7 +12,8 @@ It is built in Golang and Fiber to provide great performance and be as light as 
 - [Docker Compose v2](https://docs.docker.com/compose/compose-v2/)
 - [Golang](https://go.dev/)
 - [Fiber](https://gofiber.io/)
-- [Air](https://github.com/cosmtrek/air) (live relaod)
+- [Air](https://github.com/cosmtrek/air) (live reload)
+- [Redis](https://redis.io/) for caching
 
 ## 🛠️ Install Dependencies
 
@@ -34,6 +35,12 @@ API_KEY=your-generated-api-key                     # Optional if not production 
 APP_PORT=1337
 ```
 
+You need to launch a local redis server. The simpliest way to do so is to use a docker image of redis:
+
+```bash
+docker run -d -p 6379:6379 redis
+```
+
 Then you can launch your project simply using air command:
 
 ```bash
@@ -52,9 +59,10 @@ air
 | `API_KEY`      | The API key you want to use to reach the ecoindex API (if production server)       | `""`                                |
 | `APP_PORT`     | The port on which the application will listen                                      | `3001`                              |
 | `APP_URL`      | The url of the application                                                         | `"http://localhost:3001"`           |
-| `ENV`          | The environment in which the application is running (in dev mode, enables logging) | `dev`                               |
 | `CACHE_TTL`    | The time to live of the cache (in seconds)                                         | `604800` (1 week)                   |
+| `CACHE_DSN`    | The DSN of the Redis cache                                                         | `"localhost:6379"`                  |
 | `ECOINDEX_URL` | The url of the ecoindex website                                                    | `"https://www.ecoindex.fr"`         |
+| `ENV`          | The environment in which the application is running (in dev mode, enables logging) | `dev`                               |
 
 ## ➤ API Reference
 
@@ -66,9 +74,10 @@ GET /api/results/?url=https://www.mywebsite.com/my-page/
 
 #### Get latest results parameters
 
-| Name  | Type     | Located in | Description                                                                                  |
-|-------|----------|------------|----------------------------------------------------------------------------------------------|
-| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| Name      | Type      | Located in | Description                                                                                  |
+|-----------|-----------|------------|----------------------------------------------------------------------------------------------|
+| `url`     | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| `refresh` | `boolean` | query      | **Optional**. If set to true, the cache will be refreshed                                    |
 
 #### Get latest results responses
 
@@ -127,9 +136,10 @@ GET /badge/?url=https://www.mywebsite.com/my-page/
 
 #### Get badge parameters
 
-| Name  | Type     | Located in | Description                                                                                  |
-|-------|----------|------------|----------------------------------------------------------------------------------------------|
-| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| Name      | Type      | Located in | Description                                                                                  |
+|-----------|-----------|------------|----------------------------------------------------------------------------------------------|
+| `url`     | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| `refresh` | `boolean` | query      | **Optional**. If set to true, the cache will be refreshed                                    |
 
 #### Get badge responses
 
@@ -146,9 +156,10 @@ GET /redirect/?url=https://www.mywebsite.com/my-page/
 
 #### Get redirect parameters
 
-| Name  | Type     | Located in | Description                                                                                  |
-|-------|----------|------------|----------------------------------------------------------------------------------------------|
-| `url` | `string` | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| Name      | Type      | Located in | Description                                                                                  |
+|-----------|-----------|------------|----------------------------------------------------------------------------------------------|
+| `url`     | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
+| `refresh` | `boolean` | query      | **Optional**. If set to true, the cache will be refreshed                                    |
 
 #### Get redirect responses
 

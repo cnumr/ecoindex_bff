@@ -1,19 +1,31 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/models"
+	"github.com/go-redis/cache/v8"
 	"github.com/gofiber/fiber/v2"
 )
 
 func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
+	ctx := context.Background()
+
 	queryUrl := c.Query("url")
+
+	if c.Query("refresh") != "true" {
+		var wanted models.EcoindexSearchResults
+		if err := config.CACHE.Get(ctx, queryUrl, &wanted); err == nil {
+			return queryUrl, wanted, false, nil
+		}
+	}
 
 	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
 	if err != nil || urlToAnalyze.Host == "" {
@@ -24,6 +36,15 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 
 	ecoindexResults, err := GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
 	if err != nil {
+		panic(err)
+	}
+
+	if err := config.CACHE.Set(&cache.Item{
+		Ctx:   ctx,
+		Key:   queryUrl,
+		Value: ecoindexResults,
+		TTL:   time.Duration(config.ENV.CacheTtl) * time.Minute,
+	}); err != nil {
 		panic(err)
 	}
 

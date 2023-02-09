@@ -6,5 +6,11 @@ services:
     environment:
       ENV: prod
       APP_PORT: 3000
+      CACHE_DSN: cache:6379
     env_file:
       - .env
+
+  cache:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

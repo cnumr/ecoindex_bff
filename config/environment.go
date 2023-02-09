@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -15,7 +16,8 @@ type Environment struct {
 	AppUrl      string
 	ApiKey      string
 	ApiUrl      string
-	CacheTtl    string
+	CacheDsn    string
+	CacheTtl    int
 	EcoindexUrl string
 }
 
@@ -30,13 +32,19 @@ func GetEnvironment() *Environment {
 		godotenv.Load()
 	}
 
+	ttlInt, err := strconv.Atoi(getEnv("CACHE_TTL", fmt.Sprintf("%d", 60*60*24*7)))
+	if err != nil {
+		panic(err)
+	}
+
 	return &Environment{
 		Env:         getEnv("ENV", "dev"),
 		AppPort:     getEnv("APP_PORT", "3001"),
 		AppUrl:      getEnv("APP_URL", "http://localhost:3001"),
 		ApiKey:      getEnv("API_KEY", ""),
 		ApiUrl:      getEnv("API_URL", "https://ecoindex.p.rapidapi.com"),
-		CacheTtl:    getEnv("CACHE_TTL", fmt.Sprintf("%d", 60*60*24*7)),
+		CacheTtl:    ttlInt,
+		CacheDsn:    getEnv("CACHE_DSN", "localhost:6379"),
 		EcoindexUrl: getEnv("ECOINDEX_URL", "https://www.ecoindex.fr"),
 	}
 }
