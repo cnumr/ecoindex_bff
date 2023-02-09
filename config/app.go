@@ -5,10 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/tdewolff/minify/v2"
 )
-
-var MINIFIER *minify.M
 
 func ConfigureApp(app *fiber.App) {
 	if ENV.Env == "dev" {
