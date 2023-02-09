@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -45,7 +46,7 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 		Value: ecoindexResults,
 		TTL:   time.Duration(config.ENV.CacheTtl) * time.Minute,
 	}); err != nil {
-		panic(err)
+		log.Default().Println(err)
 	}
 
 	return queryUrl, ecoindexResults, false, nil
