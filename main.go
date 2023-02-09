@@ -3,32 +3,20 @@ package main
 import (
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/handler"
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/tdewolff/minify/v2"
 )
 
-var ENV *config.Environment = config.GetEnvironment()
-var MINIFIER *minify.M = config.GetMinifier()
-
 func main() {
-	config.ENV = ENV
-	config.MINIFIER = MINIFIER
+	config.ENV = config.GetEnvironment()
+	config.CACHE = config.GetCache()
+	config.MINIFIER = config.GetMinifier()
 
-	app := fiber.New()
-	if ENV.Env == "dev" {
-		app.Use(logger.New(logger.Config{
-			Format: "[${time}] | ${status} | ${latency} | ${method} | ${path} | url=${query:url}\n",
-		}))
-	}
-	app.Use(compress.New(compress.Config{
-		Level: compress.LevelBestCompression,
-	}))
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-	}))
+	app := *fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
+	})
+	config.ConfigureApp(&app)
 
 	app.Get("/js/badge.js", handler.GetEcoindexBadgeJs)
 	app.Get("/badge", handler.GetEcoindexBadge)

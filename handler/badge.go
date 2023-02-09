@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/cnumr/ecoindex-bff/assets"
@@ -18,7 +19,7 @@ import (
 func GetEcoindexBadgeJs(c *fiber.Ctx) error {
 	mediaType := "application/javascript"
 	c.Type("js")
-	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
+	c.Set(fiber.HeaderCacheControl, "public, max-age="+strconv.Itoa(config.ENV.CacheTtl))
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 
 	input, err := assets.JsFs.ReadFile("js/badge.js")
@@ -41,7 +42,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 
 	c.Type("svg")
 	c.Set("X-Ecoindex-Url", queryUrl)
-	c.Set(fiber.HeaderCacheControl, "public, max-age="+config.ENV.CacheTtl)
+	c.Set(fiber.HeaderCacheControl, "public, max-age="+strconv.Itoa(config.ENV.CacheTtl))
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 	c.Vary("X-Ecoindex-Url")
 

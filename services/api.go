@@ -1,19 +1,32 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/models"
+	"github.com/go-redis/cache/v8"
 	"github.com/gofiber/fiber/v2"
 )
 
 func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
+	ctx := context.Background()
 	queryUrl := c.Query("url")
+	cacheKey := "ecoindex_" + strings.ReplaceAll(queryUrl, "/", "_")
+
+	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
+		var wanted models.EcoindexSearchResults
+		if err := config.CACHE.Get(ctx, cacheKey, &wanted); err == nil {
+			return queryUrl, wanted, false, nil
+		}
+	}
 
 	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
 	if err != nil || urlToAnalyze.Host == "" {
@@ -25,6 +38,15 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 	ecoindexResults, err := GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
 	if err != nil {
 		panic(err)
+	}
+
+	if err := config.CACHE.Set(&cache.Item{
+		Ctx:   ctx,
+		Key:   cacheKey,
+		Value: ecoindexResults,
+		TTL:   time.Duration(config.ENV.CacheTtl) * time.Minute,
+	}); err != nil {
+		log.Default().Println(err)
 	}
 
 	return queryUrl, ecoindexResults, false, nil
@@ -39,7 +61,7 @@ func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults,
 
 	q := req.URL.Query()
 	q.Add("host", host)
-	q.Add("size", "100")
+	q.Add("size", "20")
 
 	req.URL.RawQuery = q.Encode()
 	req.Header = http.Header{
