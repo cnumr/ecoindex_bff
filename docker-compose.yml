@@ -9,6 +9,8 @@ services:
       CACHE_DSN: cache:6379
     env_file:
       - .env
+    depends_on:
+      - cache
 
   cache:
     image: redis:alpine
