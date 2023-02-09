@@ -71,7 +71,7 @@ The application uses a Redis cache to store the results of the API calls (only f
 
 The cache is set to expire after 1 week (604800 seconds). You can change this value by setting the `CACHE_TTL` environment variable.
 
-Endpoints `/js/badge.js`, `/badge` and `/api/results` provide a `refresh` parameter to force the cache to be refreshed. Those endpoints also add `cache-control` header set to `public, max-age=604800` (1 week) to allow the browser to cache the response.
+Endpoints `/js/badge.js`, `/badge`, `/redirect` and `/api/results` provide a `refresh` parameter to force the cache to be refreshed. Those endpoints also add `cache-control` header set to `public, max-age=604800` (1 week) to allow the browser to cache the response.
 
 ## ➤ API Reference
 
