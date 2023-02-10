@@ -35,9 +35,15 @@ func GetEcoindexBadgeJs(c *fiber.Ctx) error {
 }
 
 func GetEcoindexBadge(c *fiber.Ctx) error {
+	var dark bool
+
 	queryUrl, ecoindexResults, shouldReturn, returnValue := services.HandleEcoindexRequest(c)
 	if shouldReturn {
 		return returnValue
+	}
+
+	if c.Query("dark") == "true" {
+		dark = true
 	}
 
 	c.Type("svg")
@@ -46,20 +52,27 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 	c.Vary("X-Ecoindex-Url")
 
-	return c.SendString(generateBadge(ecoindexResults))
+	return c.SendString(generateBadge(ecoindexResults, dark))
 }
 
-func initTemplate() {
-	badgeTemplate = template.Must(template.ParseFS(&assets.TemplateFs, "template/badge.svg"))
+func initTemplate(dark bool) {
+	var badge string
+
+	if dark {
+		badge = "template/badge-dark.svg"
+	} else {
+		badge = "template/badge.svg"
+	}
+	badgeTemplate = template.Must(template.ParseFS(&assets.TemplateFs, badge))
 }
 
-func generateBadge(result models.EcoindexSearchResults) string {
-	initTemplate()
+func generateBadge(result models.EcoindexSearchResults, dark bool) string {
+	initTemplate(dark)
 	var color, grade, title, score string
 	ecoindexUrl := config.ENV.EcoindexUrl
 
 	if result.LatestResult.Id == "" {
-		color = "light-grey"
+		color = "grey"
 		grade = "?"
 		title = "Aucun résultat"
 	} else {

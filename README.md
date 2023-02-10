@@ -160,6 +160,7 @@ GET /badge/?url=https://www.mywebsite.com/my-page/
 |-----------|-----------|------------|----------------------------------------------------------------------------------------------|
 | `url`     | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
 | `refresh` | `boolean` | query      | **Optional**. If set to true, the cache will be refreshed                                    |
+| `dark`    | `boolean` | query      | **Optional**. If set to true, the badge will be dark                                         |
 
 #### Get badge responses
 
