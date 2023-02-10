@@ -1,3 +1,4 @@
 .env
 tmp
 docker-compose.override.yml
+docker-compose.yml
