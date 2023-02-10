@@ -17,22 +17,23 @@ import (
 )
 
 func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
-	ctx := context.Background()
 	queryUrl := c.Query("url")
-	cacheKey := "ecoindex_" + strings.ReplaceAll(queryUrl, "/", "_")
-
-	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
-		var wanted models.EcoindexSearchResults
-		if err := config.CACHE.Get(ctx, cacheKey, &wanted); err == nil {
-			return queryUrl, wanted, false, nil
-		}
-	}
 
 	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
 	if err != nil || urlToAnalyze.Host == "" {
 		c.Status(fiber.ErrBadRequest.Code)
 
 		return "", models.EcoindexSearchResults{}, true, c.SendString("Url to analyze is invalid")
+	}
+
+	ctx := context.Background()
+	cacheKey := "ecoindex_" + strings.ReplaceAll(urlToAnalyze.Host+"_"+urlToAnalyze.Path, "/", "_")
+
+	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
+		var wanted models.EcoindexSearchResults
+		if err := config.CACHE.Get(ctx, cacheKey, &wanted); err == nil {
+			return queryUrl, wanted, false, nil
+		}
 	}
 
 	ecoindexResults, err := GetEcoindexResults(urlToAnalyze.Host, urlToAnalyze.Path)
