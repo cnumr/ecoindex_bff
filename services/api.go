@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/cnumr/ecoindex-bff/config"
+	"github.com/cnumr/ecoindex-bff/helper"
 	"github.com/cnumr/ecoindex-bff/models"
 	"github.com/go-redis/cache/v8"
 	"github.com/gofiber/fiber/v2"
@@ -27,7 +28,7 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 	}
 
 	ctx := context.Background()
-	cacheKey := "ecoindex_" + strings.ReplaceAll(urlToAnalyze.Host+"_"+urlToAnalyze.Path, "/", "_")
+	cacheKey := helper.GenerateCacheKey(urlToAnalyze.Host + "/" + urlToAnalyze.Path)
 
 	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
 		var wanted models.EcoindexSearchResults
