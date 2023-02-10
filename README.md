@@ -25,6 +25,10 @@ go mod download
 
 To start the project, you first need configure your `.env` file and provide the url of the ecoindex API you want to reach by setting the environment variable `API_URL`. Default is set to `https://ecoindex.p.rapidapi.com`.
 
+```bash
+cp .env.dist .env
+```
+
 If you use production API url, you have to [request an API key](https://rapidapi.com/cnumr-cnumr-default/api/ecoindex/pricing) on RapidAPI platform. Once you get your API Key, you can set the env variable `API_KEY`
 
 ```bash
@@ -45,6 +49,13 @@ Then you can launch your project simply using air command:
 
 ```bash
 air
+```
+
+You can also use docker compose to launch the project:
+
+```bash
+cp docker-compose.yml.dist docker-compose.yml
+docker-compose up -d --build && docker-compose logs -f
 ```
 
 > You can now reach your Back For Front instance on [http://localhost:3001](http://localhost:3001) (regarding the `APP_PORT` you defined...)
