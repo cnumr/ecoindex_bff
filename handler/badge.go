@@ -17,17 +17,30 @@ import (
 )
 
 func GetEcoindexBadgeJs(c *fiber.Ctx) error {
+	var theme string
+
 	mediaType := "application/javascript"
 	c.Type("js")
 	c.Set(fiber.HeaderCacheControl, "public, max-age="+strconv.Itoa(config.ENV.CacheTtl))
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
+	c.Set("X-Theme", "dark")
+	c.Vary("X-Theme")
 
 	input, err := assets.JsFs.ReadFile("js/badge.js")
 	if err != nil {
 		panic(err)
 	}
 
+	if c.Query("theme") == "dark" {
+		theme = "dark"
+		c.Set("X-Theme", "dark")
+	} else {
+		theme = "light"
+		c.Set("X-Theme", "light")
+	}
+
 	javascript := bytes.Replace(input, []byte("{{url}}"), []byte(config.ENV.AppUrl), -1)
+	javascript = bytes.Replace(javascript, []byte("{{theme}}"), []byte(theme), -1)
 
 	js := helper.MinifyString(mediaType, string(javascript))
 
