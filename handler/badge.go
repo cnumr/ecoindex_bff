@@ -55,7 +55,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 		return returnValue
 	}
 
-	if c.Query("dark") == "true" {
+	if c.Query("theme") == "dark" {
 		dark = true
 	}
 
