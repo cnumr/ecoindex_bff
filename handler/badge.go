@@ -37,7 +37,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 	cacheKey := "badge-" + grade + "-" + theme
 
 	if err := config.CACHE.Get(ctx, cacheKey, &badgeSvg); err == nil {
-		return sendBadgeSvg(c, queryUrl, badgeSvg)
+		return sendBadgeSvg(c, queryUrl, badgeSvg, theme)
 	}
 
 	badgeSvg = services.GetBadgeSvg(grade, theme)
@@ -50,15 +50,17 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 		log.Default().Println(err)
 	}
 
-	return sendBadgeSvg(c, queryUrl, badgeSvg)
+	return sendBadgeSvg(c, queryUrl, badgeSvg, theme)
 }
 
-func sendBadgeSvg(c *fiber.Ctx, queryUrl string, badgeSvg string) error {
+func sendBadgeSvg(c *fiber.Ctx, queryUrl string, badgeSvg string, theme string) error {
 	c.Type("svg")
 	c.Set("X-Ecoindex-Url", queryUrl)
+	c.Set("X-Ecoindex-Theme", theme)
 	c.Set(fiber.HeaderCacheControl, "public, max-age="+strconv.Itoa(config.ENV.CacheTtl))
 	c.Set(fiber.HeaderLastModified, time.Now().Format(http.TimeFormat))
 	c.Vary("X-Ecoindex-Url")
+	c.Vary("X-Ecoindex-Theme")
 
 	return c.SendString(badgeSvg)
 }
