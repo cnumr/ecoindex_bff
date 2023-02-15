@@ -16,9 +16,11 @@ type Environment struct {
 	AppUrl       string
 	ApiKey       string
 	ApiUrl       string
+	BadgeVersion string
 	CacheDsn     string
 	CacheEnabled bool
 	CacheTtl     int
+	CDNUrl       string
 	EcoindexUrl  string
 }
 
@@ -49,9 +51,11 @@ func GetEnvironment() *Environment {
 		AppUrl:       getEnv("APP_URL", "http://localhost:3001"),
 		ApiKey:       getEnv("API_KEY", ""),
 		ApiUrl:       getEnv("API_URL", "https://ecoindex.p.rapidapi.com"),
+		BadgeVersion: getEnv("BADGE_VERSION", "v1"),
 		CacheDsn:     getEnv("CACHE_DSN", "localhost:6379"),
 		CacheEnabled: cacheEnabled,
 		CacheTtl:     ttlInt,
+		CDNUrl:       getEnv("CDN_URL", "https://cdn.jsdelivr.net/gh/cnumr/ecoindex_badge"),
 		EcoindexUrl:  getEnv("ECOINDEX_URL", "https://www.ecoindex.fr"),
 	}
 }

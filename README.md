@@ -64,17 +64,19 @@ docker-compose up -d --build && docker-compose logs -f
 
 ### Environment variables
 
-| Name            | Description                                                                        | Default value                       |
-|-----------------|------------------------------------------------------------------------------------|-------------------------------------|
-| `API_URL`       | The url of the ecoindex API you want to reach                                      | `"https://ecoindex.p.rapidapi.com"` |
-| `API_KEY`       | The API key you want to use to reach the ecoindex API (if production server)       | `""`                                |
-| `APP_PORT`      | The port on which the application will listen                                      | `3001`                              |
-| `APP_URL`       | The url of the application                                                         | `"http://localhost:3001"`           |
-| `CACHE_DSN`     | The DSN of the Redis cache                                                         | `"localhost:6379"`                  |
-| `CACHE_ENABLED` | If you want to serve API results from cache                                        | `true`                              |
-| `CACHE_TTL`     | The time to live of the cache (in seconds)                                         | `604800` (1 week)                   |
-| `ECOINDEX_URL`  | The url of the ecoindex website                                                    | `"https://www.ecoindex.fr"`         |
-| `ENV`           | The environment in which the application is running (in dev mode, enables logging) | `dev`                               |
+| Name            | Description                                                                                                                     | Default value                                        |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| `API_URL`       | The url of the ecoindex API you want to reach                                                                                   | `"https://ecoindex.p.rapidapi.com"`                  |
+| `API_KEY`       | The API key you want to use to reach the ecoindex API (if production server)                                                    | `""`                                                 |
+| `APP_PORT`      | The port on which the application will listen                                                                                   | `3001`                                               |
+| `APP_URL`       | The url of the application                                                                                                      | `"http://localhost:3001"`                            |
+| `BADGE_VERSION` | The version of the badge you want to use (comes from [Ecindex badge project](https://github.com/cnumr/ecoindex_badge/releases)) | `"v1"`                                               |
+| `CACHE_DSN`     | The DSN of the Redis cache                                                                                                      | `"localhost:6379"`                                   |
+| `CACHE_ENABLED` | If you want to serve API results from cache                                                                                     | `true`                                               |
+| `CACHE_TTL`     | The time to live of the cache (in seconds)                                                                                      | `604800` (1 week)                                    |
+| `CDN_URL`       | The base url of the CDN where the badge is hosted                                                                               | `"https://cdn.jsdelivr.net/gh/cnumr/ecoindex_badge"` |
+| `ECOINDEX_URL`  | The url of the ecoindex website                                                                                                 | `"https://www.ecoindex.fr"`                          |
+| `ENV`           | The environment in which the application is running (in dev mode, enables logging)                                              | `dev`                                                |
 
 ### About caching
 
@@ -82,7 +84,7 @@ The application uses a Redis cache to store the results of the API calls (only f
 
 The cache is set to expire after 1 week (604800 seconds). You can change this value by setting the `CACHE_TTL` environment variable.
 
-Endpoints `/js/badge.js`, `/badge`, `/redirect` and `/api/results` provide a `refresh` parameter to force the cache to be refreshed. Those endpoints also add `cache-control` header set to `public, max-age=604800` (1 week) to allow the browser to cache the response.
+Endpoints `/badge`, `/redirect` and `/api/results` provide a `refresh` parameter to force the cache to be refreshed. Those endpoints also add `cache-control` header set to `public, max-age=604800` (1 week) to allow the browser to cache the response.
 
 ## ➤ API Reference
 
@@ -160,7 +162,7 @@ GET /badge/?url=https://www.mywebsite.com/my-page/
 |-----------|-----------|------------|----------------------------------------------------------------------------------------------|
 | `url`     | `string`  | query      | **Required**. This is the url of the page from which you want to retrieve the latest results |
 | `refresh` | `boolean` | query      | **Optional**. If set to true, the cache will be refreshed                                    |
-| `dark`    | `boolean` | query      | **Optional**. If set to true, the badge will be dark                                         |
+| `theme`   | `string`  | query      | **Optional**. `light` / `dark`. If not set, defaults to `light`                              |
 
 #### Get badge responses
 
