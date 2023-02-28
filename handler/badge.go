@@ -28,7 +28,7 @@ func GetEcoindexBadge(c *fiber.Ctx) error {
 	}
 
 	if ecoindexResults.LatestResult.Grade == "" {
-		grade = "?"
+		grade = "unkown"
 	} else {
 		grade = ecoindexResults.LatestResult.Grade
 	}
