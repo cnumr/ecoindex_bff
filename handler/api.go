@@ -1,15 +1,11 @@
 package handler
 
 import (
-	"html/template"
-
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/services"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
-
-var badgeTemplate *template.Template
 
 // Deprecated
 func GetEcoindexResults(c *fiber.Ctx) error {

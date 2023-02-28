@@ -18,7 +18,6 @@ func main() {
 	})
 	config.ConfigureApp(&app)
 
-	app.Get("/js/badge.js", handler.GetEcoindexBadgeJs)
 	app.Get("/badge", handler.GetEcoindexBadge)
 	app.Get("/redirect", handler.GetEcoindexRedirect)
 	app.Get("/health", func(c *fiber.Ctx) error {
