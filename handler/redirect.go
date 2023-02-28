@@ -12,7 +12,7 @@ func GetEcoindexRedirect(c *fiber.Ctx) error {
 		return returnValue
 	}
 
-	if ecoindexResults.Count == 0 {
+	if ecoindexResults.LatestResult.Id == "" {
 		return c.Redirect(config.ENV.EcoindexUrl, fiber.StatusSeeOther)
 	}
 
