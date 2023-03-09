@@ -30,12 +30,5 @@ func main() {
 	api.Get("/tasks/:id", handler.GetTask)
 	api.Get("/screenshot/:id", handler.GetScreenshotApi)
 
-	// Deprecated -->
-	app.Get("/", handler.GetEcoindexResults)
-	app.Post("/tasks", handler.CreateTask)
-	app.Get("/tasks/:id", handler.GetTask)
-	app.Get("/screenshot/:id", handler.GetScreenshotApi)
-	// <-- Deprecated
-
 	app.Listen(":" + config.ENV.AppPort)
 }

@@ -7,15 +7,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
 
-// Deprecated
-func GetEcoindexResults(c *fiber.Ctx) error {
-	if c.Query("badge") == "true" {
-		return GetEcoindexBadge(c)
-	}
-
-	return GetEcoindexResultsApi(c)
-}
-
 func GetEcoindexResultsApi(c *fiber.Ctx) error {
 	_, ecoindexResults, shouldReturn, returnValue := services.HandleEcoindexRequest(c)
 	if shouldReturn {
