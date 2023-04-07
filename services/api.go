@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/cnumr/ecoindex-bff/config"
@@ -103,7 +104,7 @@ func convertApIResult(ecoindexes []models.Ecoindex, host string, path string) mo
 
 		ecoindexUrl := ecoindexResultUrl.Host + ecoindexResultUrl.Path
 		ecoindex.Color = GetColor(ecoindex.Grade)
-		if ecoindexUrl == host+path {
+		if ecoindexUrl == host+path || ecoindexUrl == strings.TrimSuffix(host+path, "/") || ecoindexUrl == host+path+"/" {
 			exactResults = append(exactResults, ecoindex)
 		} else {
 			hostResults = append(hostResults, ecoindex)
