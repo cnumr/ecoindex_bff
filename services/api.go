@@ -28,7 +28,7 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 	}
 
 	ctx := context.Background()
-	cacheKey := helper.GenerateCacheKey(urlToAnalyze.Host + "/" + urlToAnalyze.Path)
+	cacheKey := helper.GenerateCacheKey(urlToAnalyze.Host + urlToAnalyze.Path)
 
 	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
 		var wanted models.EcoindexSearchResults
