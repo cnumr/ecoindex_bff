@@ -8,7 +8,7 @@ import (
 
 func GetHost(c *fiber.Ctx) error {
 	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
-	proxy.Forward(config.ENV.ApiUrl + "/v1/hosts/" + c.Params("hostname"))(c)
+	proxy.Do(c, config.ENV.ApiUrl+"/v1/hosts/"+c.Params("hostname"))
 
 	return nil
 }

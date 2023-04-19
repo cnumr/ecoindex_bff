@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"fmt"
+
 	"github.com/cnumr/ecoindex-bff/config"
 	"github.com/cnumr/ecoindex-bff/services"
 	"github.com/gofiber/fiber/v2"
@@ -22,7 +24,20 @@ func GetEcoindexResultsApi(c *fiber.Ctx) error {
 
 func GetScreenshotApi(c *fiber.Ctx) error {
 	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
-	proxy.Forward(config.ENV.ApiUrl + "/v1/ecoindexes/" + c.Params("id") + "/screenshot")(c)
+	proxy.Do(c, config.ENV.ApiUrl+"/v1/ecoindexes/"+c.Params("id")+"/screenshot")
+
+	return nil
+}
+
+func ComputeEcoindex(c *fiber.Ctx) error {
+
+	size := fmt.Sprintf("%f", c.QueryFloat("size"))
+	dom := fmt.Sprintf("%d", c.QueryInt("dom"))
+	requests := fmt.Sprintf("%d", c.QueryInt("requests"))
+
+	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
+
+	proxy.Do(c, config.ENV.ApiUrl+"/ecoindex"+"?dom="+dom+"&requests="+requests+"&size="+size)
 
 	return nil
 }
