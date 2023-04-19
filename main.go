@@ -30,6 +30,7 @@ func main() {
 	api.Get("/tasks/:id", handler.GetTask)
 	api.Get("/screenshot/:id", handler.GetScreenshotApi)
 	api.Get("/hosts/:hostname", handler.GetHost)
+	api.Get("/ecoindex", handler.ComputeEcoindex)
 
 	app.Listen(":" + config.ENV.AppPort)
 }

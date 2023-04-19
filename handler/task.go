@@ -8,14 +8,14 @@ import (
 
 func CreateTask(c *fiber.Ctx) error {
 	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
-	proxy.Forward(config.ENV.ApiUrl + "/v1/tasks/ecoindexes")(c)
+	proxy.Do(c, config.ENV.ApiUrl+"/v1/tasks/ecoindexes")
 
 	return nil
 }
 
 func GetTask(c *fiber.Ctx) error {
 	c.Request().Header.Set("x-rapidapi-key", config.ENV.ApiKey)
-	proxy.Forward(config.ENV.ApiUrl + "/v1/tasks/ecoindexes/" + c.Params("id"))(c)
+	proxy.Do(c, config.ENV.ApiUrl+"/v1/tasks/ecoindexes/"+c.Params("id"))
 
 	return nil
 }
