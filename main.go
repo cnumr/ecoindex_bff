@@ -29,6 +29,7 @@ func main() {
 	api.Post("/tasks", handler.CreateTask)
 	api.Get("/tasks/:id", handler.GetTask)
 	api.Get("/screenshot/:id", handler.GetScreenshotApi)
+	api.Get("/hosts/:hostname", handler.GetHost)
 
 	app.Listen(":" + config.ENV.AppPort)
 }
