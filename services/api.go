@@ -17,10 +17,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
-	queryUrl := c.Query("url")
+type AnalysisQuery struct {
+	Url     string `json:"url"`
+	Refresh bool   `json:"refresh"`
+}
 
-	urlToAnalyze, err := url.ParseRequestURI(queryUrl)
+func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, bool, error) {
+	analysis := new(AnalysisQuery)
+	if err := c.QueryParser(analysis); err != nil {
+		return "", models.EcoindexSearchResults{}, false, err
+	}
+
+	urlToAnalyze, err := url.ParseRequestURI(analysis.Url)
 	if err != nil || urlToAnalyze.Host == "" {
 		c.Status(fiber.ErrBadRequest.Code)
 
@@ -30,10 +38,10 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 	ctx := context.Background()
 	cacheKey := helper.GenerateCacheKey(urlToAnalyze.Host + urlToAnalyze.Path)
 
-	if c.Query("refresh") != "true" && config.ENV.CacheEnabled {
+	if !analysis.Refresh && config.ENV.CacheEnabled {
 		var wanted models.EcoindexSearchResults
 		if err := config.CACHE.Get(ctx, cacheKey, &wanted); err == nil {
-			return queryUrl, wanted, false, nil
+			return analysis.Url, wanted, false, nil
 		}
 	}
 
@@ -51,7 +59,7 @@ func HandleEcoindexRequest(c *fiber.Ctx) (string, models.EcoindexSearchResults, 
 		log.Default().Println(err)
 	}
 
-	return queryUrl, ecoindexResults, false, nil
+	return analysis.Url, ecoindexResults, false, nil
 }
 
 func GetEcoindexResults(host string, path string) (models.EcoindexSearchResults, error) {

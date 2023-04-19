@@ -16,11 +16,7 @@ import (
 func GetEcoindexBadge(c *fiber.Ctx) error {
 	var grade, theme, badgeSvg string
 
-	if c.Query("theme") == "dark" {
-		theme = "dark"
-	} else {
-		theme = "light"
-	}
+	theme = c.Query("theme", "light")
 
 	queryUrl, ecoindexResults, shouldReturn, returnValue := services.HandleEcoindexRequest(c)
 	if shouldReturn {
