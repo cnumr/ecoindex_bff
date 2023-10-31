@@ -12,7 +12,7 @@ github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f h1:lO4WD4F/r
 github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f/go.mod h1:cuUVRXasLTGF7a8hSLbxyZXjz+1KgoB3wDUb6vlszIc=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
-github.com/fsnotify/fsnotify v1.6.0 h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=
+github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=
 github.com/go-redis/cache/v8 v8.4.4 h1:Rm0wZ55X22BA2JMqVtRQNHYyzDd0I5f+Ec/C9Xx3mXY=
 github.com/go-redis/cache/v8 v8.4.4/go.mod h1:JM6CkupsPvAu/LYEVGQy6UB4WDAzQSXkR0lUCbeIcKc=
 github.com/go-redis/redis/v8 v8.11.3/go.mod h1:xNJ9xDG09FsIPwh3bWdk+0oDWHbtF9rPN0F/oD9XeKc=
@@ -79,12 +79,12 @@ github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/tdewolff/minify/v2 v2.19.10 h1:79Z2DJ9p0zSBj2BxD5fyLkIwhhRZnWSOeK3C52ljAu4=
-github.com/tdewolff/minify/v2 v2.19.10/go.mod h1:IX+vt5HNKc+RFIQj7aI4D6RQ9p41vjay9lGorpHNC34=
-github.com/tdewolff/parse/v2 v2.6.8 h1:mhNZXYCx//xG7Yq2e/kVLNZw4YfYmeHbhx+Zc0OvFMA=
-github.com/tdewolff/parse/v2 v2.6.8/go.mod h1:XHDhaU6IBgsryfdnpzUXBlT6leW/l25yrFBTEb4eIyM=
-github.com/tdewolff/test v1.0.9 h1:SswqJCmeN4B+9gEAi/5uqT0qpi1y2/2O47V/1hhGZT0=
-github.com/tdewolff/test v1.0.9/go.mod h1:6DAvZliBAAnD7rhVgwaM7DE5/d9NMOAJ09SqYqeK4QE=
+github.com/tdewolff/minify/v2 v2.20.5 h1:IbJpmpAFESnuJPdsvFBJWsDcXE5qHsmaVQrRqhOI9sI=
+github.com/tdewolff/minify/v2 v2.20.5/go.mod h1:N78HtaitkDYAWXFbqhWX/LzgwylwudK0JvybGDVQ+Mw=
+github.com/tdewolff/parse/v2 v2.7.3-0.20231031132452-e7c20a5d77ab h1:4zj+h84OrVW4pljmp+LABknN7VS1IMAbeHj+eckO6Ao=
+github.com/tdewolff/parse/v2 v2.7.3-0.20231031132452-e7c20a5d77ab/go.mod h1:9p2qMIHpjRSTr1qnFxQr+igogyTUTlwvf9awHSm84h8=
+github.com/tdewolff/test v1.0.10 h1:uWiheaLgLcNFqHcdWveum7PQfMnIUTf9Kl3bFxrIoew=
+github.com/tdewolff/test v1.0.10/go.mod h1:6DAvZliBAAnD7rhVgwaM7DE5/d9NMOAJ09SqYqeK4QE=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasthttp v1.50.0 h1:H7fweIlBm0rXLs2q0XbalvJ6r0CUPFWK3/bB4N13e9M=
